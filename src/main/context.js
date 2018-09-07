@@ -11,6 +11,7 @@ import LedgerService from './blockchain/leadger-service';
 import { CrashReportService } from '../common/logger/crash-report-service';
 import TrezorService from './blockchain/trezor-service';
 import RpcHandler from './rpc-handler';
+import EthGasStationService from './blockchain/eth-gas-station-service';
 
 export const configureContext = (store, app) => {
 	const container = createContainer({
@@ -29,6 +30,7 @@ export const configureContext = (store, app) => {
 		lwsService: asClass(LWSService).singleton(),
 		idAttributeTypeService: asClass(IdAttributeTypeService).singleton(),
 		exchangesService: asClass(ExchangesService).singleton(),
+		ethGasStationService: asClass(EthGasStationService).singleton(),
 		trezorService: asFunction(() => {
 			let Service = TrezorService();
 			return new Service();

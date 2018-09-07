@@ -8,6 +8,7 @@ import { TransferPriceWrapper } from './react/transfer-price/index';
 import { TransactionNoGasErrorWrapper } from './react/transaction/transaction-no-gas-error';
 import { IdAttributeSchemaForm } from './react/id-attribute';
 import { MarketplaceWrapper } from './react/marketplace';
+import { TransactionSendBoxWrapper } from './react/transaction/send';
 
 const { Logger } = require('common/logger');
 
@@ -215,6 +216,15 @@ const transactionNoGasErrorWrapper = react2angular(TransactionNoGasErrorWrapper,
 ]);
 angular.module('kyc-wallet').component('transactionNoGasError', transactionNoGasErrorWrapper);
 
+const transactionSendBoxWrapper = react2angular(TransactionSendBoxWrapper, [
+	'reloadEthGasStationInfoAction',
+	'onAddressFieldChange',
+	'cryptoCurrency',
+	'closeAction',
+	'sendAction'
+]);
+angular.module('kyc-wallet').component('transactionSendBox', transactionSendBoxWrapper);
+
 const idAttributeSchemaForm = react2angular(IdAttributeSchemaForm, [
 	'attr',
 	'type',
@@ -250,6 +260,9 @@ angular
 
 const SendTokenDialogController = require('./angular/controllers/commons/dialogs/send-token-controller.js');
 angular.module('kyc-wallet').controller('SendTokenDialogController', SendTokenDialogController);
+
+const SendTransactionController = require('./angular/controllers/commons/dialogs/send-transaction-controller.js');
+angular.module('kyc-wallet').controller('SendTransactionController', SendTransactionController);
 
 const UpdateDialogController = require('./angular/controllers/commons/dialogs/update-controller.js');
 angular.module('kyc-wallet').controller('UpdateDialogController', UpdateDialogController);
