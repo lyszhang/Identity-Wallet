@@ -24,6 +24,7 @@ export const SELECTED_SERVER_URL = SERVER_CONFIG[CONFIG.node][CONFIG.chainId].ur
 
 export class Web3Service {
 	constructor() {
+		Web3Service.web3 = new Web3();
 		this.web3 = new Web3();
 		const { HttpProvider } = this.web3.providers;
 		this.web3.setProvider(new HttpProvider(SELECTED_SERVER_URL));
