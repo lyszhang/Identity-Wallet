@@ -1,6 +1,7 @@
 /* eslint-env browser */ /* global angular, staticPath */
 'use strict';
 import { react2angular } from 'react2angular';
+import dotenv from 'dotenv';
 import { AddressBookWrapper } from './react/address-book/main/index';
 import { AddressBookAddWrapper } from './react/address-book/add/index';
 import { AddressBookEditWrapper } from './react/address-book/edit/index';
@@ -13,14 +14,23 @@ import { TransactionErrorWrapper } from './react/transaction/transaction-error';
 import { IdAttributeSchemaForm } from './react/id-attribute';
 import { MarketplaceWrapper } from './react/marketplace';
 import { TransactionsHistoryWrapper } from './react/transaction/transactions-history';
+import { ExchangesWrapper } from './react/marketplace/exchanges';
+import { ItemWrapper } from './react/marketplace/item';
+import { WithoutBalanceWrapper } from './react/marketplace/no-balance';
+import { UnlockWrapper } from './react/marketplace/unlock';
+import { ReturnWrapper } from './react/marketplace/return';
+import { UnlockProgressWrapper } from './react/marketplace/progress';
+
 import { TransactionSendBoxWrapper } from './react/transaction/send';
 import { TransactionSendProgressBoxWrapper } from './react/transaction/progress';
-
-import { setGlobalContext, configureContext } from 'common/context';
-const ctx = configureContext(null, null).cradle;
-setGlobalContext(ctx);
+import { setGlobalContext, configureContext, getGlobalContext } from 'common/context';
 
 const { Logger } = require('common/logger');
+
+dotenv.config();
+
+const ctx = getGlobalContext() || configureContext('renderer').cradle;
+setGlobalContext(ctx);
 
 const path = require('path');
 
@@ -286,6 +296,35 @@ angular.module('kyc-wallet').component('marketplace', marketplaceWrapper);
 const transactionsHistoryWrapper = react2angular(TransactionsHistoryWrapper, ['list', 'openLink']);
 angular.module('kyc-wallet').component('transactionsHistory', transactionsHistoryWrapper);
 
+const exchangesWrapper = react2angular(ExchangesWrapper, ['viewAction', 'backAction']);
+angular.module('kyc-wallet').component('exchanges', exchangesWrapper);
+
+const itemWrapper = react2angular(ItemWrapper, [
+	'name',
+	'unlockAction',
+	'backAction',
+	'returnAction'
+]);
+angular.module('kyc-wallet').component('item', itemWrapper);
+
+const withoutBalanceWrapper = react2angular(WithoutBalanceWrapper, ['closeAction']);
+angular.module('kyc-wallet').component('withoutBalance', withoutBalanceWrapper);
+
+const unlockMarketplace = react2angular(UnlockWrapper, [
+	'closeAction',
+	'navigateToTransactionProgress'
+]);
+angular.module('kyc-wallet').component('unlockMarketplace', unlockMarketplace);
+
+const unlockProgressWrapper = react2angular(UnlockProgressWrapper, ['closeAction']);
+angular.module('kyc-wallet').component('unlockProgress', unlockProgressWrapper);
+
+const returnDepositMarketplace = react2angular(ReturnWrapper, [
+	'closeAction',
+	'navigateToTransactionProgress'
+]);
+angular.module('kyc-wallet').component('returnDepositMarketplace', returnDepositMarketplace);
+
 /**
  * controllers
  */
@@ -511,6 +550,29 @@ const MemberMarketplaceExchangeItemController = require('./angular/controllers/m
 angular
 	.module('kyc-wallet')
 	.controller('MemberMarketplaceExchangeItemController', MemberMarketplaceExchangeItemController);
+
+const MemberMarketplaceNoBalanceController = require('./angular/controllers/member/marketplace/no-balance-controller.js');
+angular
+	.module('kyc-wallet')
+	.controller('MemberMarketplaceNoBalanceController', MemberMarketplaceNoBalanceController);
+
+const MemberMarketplaceUnlockController = require('./angular/controllers/member/marketplace/unlock-controller.js');
+angular
+	.module('kyc-wallet')
+	.controller('MemberMarketplaceUnlockController', MemberMarketplaceUnlockController);
+
+const MemberMarketplaceReturnController = require('./angular/controllers/member/marketplace/return-controller.js');
+angular
+	.module('kyc-wallet')
+	.controller('MemberMarketplaceReturnController', MemberMarketplaceReturnController);
+
+const MemberMarketplaceUnlockProgressController = require('./angular/controllers/member/marketplace/unlock-progress-controller.js');
+angular
+	.module('kyc-wallet')
+	.controller(
+		'MemberMarketplaceUnlockProgressController',
+		MemberMarketplaceUnlockProgressController
+	);
 
 /**
  * Address Book

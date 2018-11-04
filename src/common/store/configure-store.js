@@ -8,8 +8,11 @@ import wallet from '../wallet';
 import prices from '../prices';
 import walletTokens from '../wallet-tokens';
 import viewAll from '../view-all-tokens';
+import exchanges from '../exchanges';
+import { createLogger } from 'redux-logger';
 import ethGasStationInfo from '../eth-gas-station';
 import transaction from '../transaction';
+import marketplaces from '../marketplaces';
 import addressBook from '../address-book';
 
 import {
@@ -24,6 +27,10 @@ export default (initialState, scope = 'main') => {
 	let middleware = [thunk, promise];
 
 	if (scope === 'renderer') {
+		if (process.env.ENABLE_REDUX_LOGGER) {
+			const logger = createLogger({ collapsed: (getState, actions) => true });
+			middleware.push(logger);
+		}
 		middleware = [forwardToMain, ...middleware];
 	}
 
@@ -40,8 +47,10 @@ export default (initialState, scope = 'main') => {
 		walletTokens,
 		viewAll,
 		prices,
+		exchanges,
 		ethGasStationInfo,
 		transaction,
+		marketplaces,
 		addressBook
 	});
 	const enhancer = compose(...enhanced);
