@@ -15,6 +15,7 @@ import { MarketplaceWrapper } from './react/marketplace';
 import { TransactionsHistoryWrapper } from './react/transaction/transactions-history';
 import { TransactionSendBoxWrapper } from './react/transaction/send';
 import { TransactionSendProgressBoxWrapper } from './react/transaction/progress';
+import { SelfkeyIdWrapper } from './react/selfkey-id/main';
 
 import { setGlobalContext, configureContext } from 'common/context';
 const ctx = configureContext(null, null).cradle;
@@ -285,6 +286,9 @@ angular.module('kyc-wallet').component('marketplace', marketplaceWrapper);
 
 const transactionsHistoryWrapper = react2angular(TransactionsHistoryWrapper, ['list', 'openLink']);
 angular.module('kyc-wallet').component('transactionsHistory', transactionsHistoryWrapper);
+
+const selfkeyIdWrapper = react2angular(SelfkeyIdWrapper, []);
+angular.module('kyc-wallet').component('selfkeyId', selfkeyIdWrapper);
 
 /**
  * controllers
